@@ -20,5 +20,12 @@ def main():
     with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8") as f:
         f.write(LINE)
 
+    # Read back and verify the file holds exactly the expected line:
+    # a stale or truncated write must fail loudly instead of being graded.
+    with open(os.path.join(out_dir, "entry.txt"), "r", encoding="utf-8") as f:
+        written = f.read()
+    assert written == LINE, "entry.txt read-back mismatch"
+    assert len(written) == 128, "entry.txt must be exactly 128 characters"
+
 if __name__ == "__main__":
     main()
